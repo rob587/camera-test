@@ -1,6 +1,6 @@
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useRef, useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function Index() {
   // hook della camera
@@ -33,9 +33,23 @@ export default function Index() {
     if (result) setFoto(result.uri);
   };
 
+  if (foto) {
+    return (
+      <View style={styles.contenitore}>
+        <Image source={{ uri: foto }} style={styles.foto} />
+        <Pressable style={styles.btn} onPress={() => setFoto(null)}>
+          <Text style={styles.btnTesto}>Scatta un'altra</Text>
+        </Pressable>
+      </View>
+    );
+  }
+
   return (
-    <View>
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+    <View style={styles.contenitore}>
+      <CameraView style={styles.camera} ref={cameraRef} />
+      <Pressable style={styles.btnScatta} onPress={scattaFoto}>
+        <View style={styles.cerchio} />
+      </Pressable>
     </View>
   );
 }
