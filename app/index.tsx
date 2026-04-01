@@ -48,10 +48,23 @@ export default function Index() {
 
   return (
     <View style={styles.contenitore}>
-      <CameraView style={styles.camera} ref={cameraRef} />
-      <Pressable style={styles.btnScatta} onPress={scattaFoto}>
-        <View style={styles.cerchio} />
-      </Pressable>
+      <CameraView style={styles.camera} facing={facing} ref={cameraRef} />
+
+      {/* bottoni in basso */}
+      <View style={styles.controls}>
+        {/* gira camera */}
+        <Pressable
+          style={styles.btnGira}
+          onPress={() => setFacing((f) => (f === "back" ? "front" : "back"))}
+        >
+          <Text style={styles.btnGiraTesto}>🔄</Text>
+        </Pressable>
+
+        {/* scatta */}
+        <Pressable style={styles.btnScatta} onPress={scattaFoto}>
+          <View style={styles.cerchio} />
+        </Pressable>
+      </View>
     </View>
   );
 }
@@ -80,5 +93,25 @@ const styles = StyleSheet.create({
     height: 56,
     borderRadius: 28,
     backgroundColor: "#fff",
+  },
+  controls: {
+    position: "absolute",
+    bottom: 40,
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 40,
+  },
+  btnGira: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: "rgba(255,255,255,0.3)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  btnGiraTesto: {
+    fontSize: 22,
   },
 });
