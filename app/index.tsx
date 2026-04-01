@@ -1,6 +1,6 @@
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useRef, useState } from "react";
-import { Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function Index() {
   // hook della camera
@@ -10,9 +10,59 @@ export default function Index() {
   const [foto, setFoto] = useState<string | null>(null);
   const cameraRef = useRef<CameraView>(null);
 
+  if (!permesso) return <View />;
+
+  // se il permesso non è stato dato mostra messaggio
+
+  if (!permesso.granted) {
+    return (
+      <View style={styles.centro}>
+        <Text style={styles.testo}>Serve il permesso della camera</Text>
+        <Pressable style={styles.btn} onPress={richiestaPermesso}>
+          <Text style={styles.btnTesto}>Dai il permesso</Text>
+        </Pressable>
+      </View>
+    );
+  }
+
+  // funzione per scattare foto
+
+  const scattaFoto = async () => {
+    if (!cameraRef.current) return;
+    const result = await cameraRef.current.takePictureAsync();
+    if (result) setFoto(result.uri);
+  };
+
   return (
     <View>
       <Text>Edit app/index.tsx to edit this screen.</Text>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  contenitore: { flex: 1 },
+  centro: { flex: 1, justifyContent: "center", alignItems: "center", gap: 16 },
+  camera: { flex: 1 },
+  foto: { flex: 1 },
+  testo: { fontSize: 16, textAlign: "center", paddingHorizontal: 24 },
+  btn: { backgroundColor: "#4f46e5", padding: 16, borderRadius: 12 },
+  btnTesto: { color: "#fff", fontWeight: "600" },
+  btnScatta: {
+    position: "absolute",
+    bottom: 40,
+    alignSelf: "center",
+    width: 72,
+    height: 72,
+    borderRadius: 36,
+    backgroundColor: "rgba(255,255,255,0.3)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  cerchio: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: "#fff",
+  },
+});
