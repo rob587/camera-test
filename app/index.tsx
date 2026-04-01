@@ -9,6 +9,8 @@ export default function Index() {
   //stati generali
   const [foto, setFoto] = useState<string | null>(null);
   const cameraRef = useRef<CameraView>(null);
+  //nuovo stato per girare la fotocamera
+  const [facing, setFacing] = useState<"front" | "back">("back");
 
   if (!permesso) return <View />;
 
